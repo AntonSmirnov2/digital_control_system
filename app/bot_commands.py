@@ -5,7 +5,7 @@ from app.models import User
 from app.plugins.bot_markups import start_markup, update_location_markup
 from app.plugins.bot_logic import decrypt_photo, callback_to_dict, render_html_for_tg, \
     download_photo
-from app.plugins.db_helpers import get_tg_user, update_book_status, \
+from app.plugins.db_helpers import get_tg_user, update_book_status, get_book_status_and_real_id,\
     logout_tg_user, update_book_location, get_possible_location_updates, get_book_status_name_by_id
 
 # TODO create handler for text input of QR-code [in: "AGPZ-000123", out: query to db]
@@ -187,12 +187,10 @@ def update_book_status_callback(call):
         user = get_tg_user(cid)
         update_book_status(user, reply['qr_id'], int(reply['new_status']))
         bot.answer_callback_query(call.id, 'Статус обновлен')
-        bot.send_message(cid, 'Статус обновлен')
-        # SQLite не работает
+        new_status, real_id = get_book_status_and_real_id(reply['qr_id'])
         old_status = get_book_status_name_by_id(reply['old_status'])
-        new_status = get_book_status_name_by_id(reply['new_status'])
         reply_msg = render_html_for_tg('book_status_updated.html',
-                                       real_id=reply['qr_id'],
+                                       real_id=real_id,
                                        old_status=old_status,
                                        new_status=new_status)
         bot.send_message(cid, reply_msg, parse_mode='html')

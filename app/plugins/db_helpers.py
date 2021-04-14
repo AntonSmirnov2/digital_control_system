@@ -16,7 +16,7 @@ def get_book_status_and_real_id(qr_id):
 
 
 def get_book_status_name_by_id(id):
-    return BookStatus.query.get(int(id))
+    return BookStatus.query.get(int(id)).status_name
 
 
 def get_tg_user(tg_user_id) -> User:
