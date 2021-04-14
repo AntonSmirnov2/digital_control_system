@@ -1,0 +1,8 @@
+<table class="table table-hover">
+    <tr>
+        <td>
+            <a href="{{ url_for('user', username=action.author.username) }}">{{ action.author.username }}</a> do: ({{ moment(action.timestamp).fromNow() }})
+            <br><a href="{{ url_for('book', book_qr_id=action.book.qr_id) }}">{{ action.book.real_id  }}</a> {{ action.action }}
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <div>
+      <div class="bg-light p-5 rounded">
+        <div class="col-sm-8 mx-auto">
+            <h2>Hello, {{ current_user.username }}!</h2>
+            <p>Registered users:</p>
+            {% for user in users %}
+          <li><a href="{{ url_for('user', username=user.username) }}">{{ user.username }}</a> - {{ user.access_role.role_name }}</li>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+{% endblock %}

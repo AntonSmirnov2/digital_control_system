@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <table class="table table-hover">
+        <tr>
+            <td width="100px"><img src="../static/book.svg" alt="" ></td>
+            <td>
+                <h1>{{ book.real_id }}</h1>
+                <p>Organization: {{ book.company.org_full_name }}</p>
+                <p>Status: {{ book.book_status.status_name }}</p>
+                <p>Last location: {{ actions[0].location }}</p>
+            </td>
+        </tr>
+    </table>
+    {% if actions %}
+        {% for action in actions %}
+            {% include '_action.html' %}
+        {% endfor %}
+        <nav aria-label="...">
+        <ul class="pager">
+            <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <a href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> Newer actions
+                </a>
+            </li>
+            <li class="next{% if not next_url %} disabled{% endif %}">
+                <a href="{{ next_url or '#' }}">
+                    Older actions <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    {% else %}
+        <h3 class="text-center text-muted bg-warning col-md-4 col-md-offset-4">Book has no actions</h3>
+    {% endif %}
+{% endblock %}
