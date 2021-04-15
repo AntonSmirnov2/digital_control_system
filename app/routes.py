@@ -139,6 +139,7 @@ def get_bot_update():
 
 
 @app.route('/webhook')
+@login_required
 def set_webhook():
     if Config.APP_URL:
         bot.remove_webhook()

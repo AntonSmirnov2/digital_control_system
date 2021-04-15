@@ -42,8 +42,24 @@ distribution_pie_and_bar_graph = dbc.Row([
     dbc.Col(subcontractors_distribution_bar_graph_card, width=7)
 ])
 
+select = dbc.Select(
+    id="select",
+    bs_size='sm',
+    options=[
+        {"label": "Месяц", "value": "month"},
+        {"label": "Неделю", "value": "week"},
+        {"label": "День", "value": "day"},
+    ],
+    value='week'
+)
+
+apd_header = dbc.Row([
+    dbc.Col('Активность за', width=2, align='center', style={'text-align': 'end'}),
+    dbc.Col(select, width=2)
+], justify="center", no_gutters=True)
+
 actions_per_day_bar_graph_card = dbc.Card([
-    dbc.CardHeader('Активность', style={'text-align': 'center'}),
+    dbc.CardHeader(apd_header),
     dbc.CardBody([
         dcc.Graph(id='actions-per-day-bar-graph')
     ])
