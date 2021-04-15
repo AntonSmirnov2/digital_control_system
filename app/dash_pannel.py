@@ -6,9 +6,15 @@ from dash.dependencies import Input, Output
 from app import dash
 from app.plugins.dash_draphs import distribution_by_status_pie_fig, distribution_by_subcontractors_bar_fig
 
-
 navbar = dbc.NavbarSimple(
     children=[
+        dbc.NavItem(dbc.Button(
+            'Обновить значения',
+            id='update_button',
+            outline=True,
+            color="primary",
+            className="mr-3",
+            block=True)),
         dbc.NavItem(dbc.NavLink("Info", href='/info', external_link=True)),
         dbc.NavItem(dbc.NavLink("Main Page", href='/', external_link=True)),
     ],
@@ -17,33 +23,35 @@ navbar = dbc.NavbarSimple(
     sticky="top",
 )
 
-action_menu = dbc.Button(
-    'Обновить значения',
-    id='update_button',
-    outline=True,
-    color="primary",
-    className="mr-3",
-    block=True
-)
-
-pie_graph_card = dbc.Card([
+total_distribution_pie_graph_card = dbc.Card([
     dbc.CardHeader('Комплекты по статусам', style={'text-align': 'center'}),
     dbc.CardBody([
-        dcc.Graph(id='pie-graph')
+        dcc.Graph(id='total-distribution-pie-graph')
     ]),
 ], style={'margin': 0})
 
-bar_graph_card = dbc.Card([
+subcontractors_distribution_bar_graph_card = dbc.Card([
     dbc.CardHeader('Комплекты по подрядчикам', style={'text-align': 'center'}),
     dbc.CardBody([
-        dcc.Graph(id='bar-graph')
+        dcc.Graph(id='subcontractors-distribution-bar-graph')
     ])
 ], style={'margin': 0})
 
-pie_and_bar_graph = dbc.Row([
-    dbc.Col(pie_graph_card, width=5),
-    dbc.Col(bar_graph_card, width=7)]
-)
+distribution_pie_and_bar_graph = dbc.Row([
+    dbc.Col(total_distribution_pie_graph_card, width=5),
+    dbc.Col(subcontractors_distribution_bar_graph_card, width=7)
+])
+
+actions_per_day_bar_graph_card = dbc.Card([
+    dbc.CardHeader('Активность', style={'text-align': 'center'}),
+    dbc.CardBody([
+        dcc.Graph(id='actions-per-day-bar-graph')
+    ])
+], style={'margin': 0})
+
+actions_per_day_bar_graph = dbc.Row([
+    dbc.Col(actions_per_day_bar_graph_card, width=12)
+])
 
 dash.layout = html.Div(
     [
@@ -51,9 +59,9 @@ dash.layout = html.Div(
         dbc.Container(
             [
                 # dcc.Interval(id="interval", interval=5000, n_intervals=0),
-                action_menu,
+                distribution_pie_and_bar_graph,
                 html.Br(),
-                pie_and_bar_graph,
+                actions_per_day_bar_graph,
                 html.Br(),
                 html.Div(style={"height": "200px"}),
             ]
@@ -61,11 +69,11 @@ dash.layout = html.Div(
     ]
 )
 
+
 @dash.callback(
-    [Output('pie-graph', 'figure'),
-     Output('bar-graph', 'figure')],
-    [Input('update_button', 'n_clicks'),
-     ]
+    [Output('total-distribution-pie-graph', 'figure'),
+     Output('subcontractors-distribution-bar-graph', 'figure')],
+    [Input('update_button', 'n_clicks')]
 )
 def update_statistic(update):
     return distribution_by_status_pie_fig(), distribution_by_subcontractors_bar_fig()
