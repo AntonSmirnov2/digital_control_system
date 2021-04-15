@@ -17,6 +17,7 @@ def decrypt_photo():
     markup = None
 
     photo_content = decrypt_qr_code()
+    os.remove(r'bot_tmp_files\qrcode.jpg')
     if not photo_content:
         reply_text = 'Код не распознан.'
         return reply_text, markup
