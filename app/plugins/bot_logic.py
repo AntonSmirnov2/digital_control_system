@@ -39,7 +39,7 @@ def download_photo(message):
     file_id = message.photo[-1].file_id
     photo = bot.get_file(file_id)
     downloaded_photo = bot.download_file(photo.file_path)
-    with open("bot_tmp_files/qrcode.jpg", 'wb') as new_file:
+    with open(r"bot_tmp_files\qrcode.jpg", 'wb') as new_file:
         new_file.write(downloaded_photo)
 
 
