@@ -44,7 +44,7 @@ def download_photo(message):
 
 
 def render_html_for_tg(html_name, **kwargs):
-    template_path = os.path.join(r'app\templates\bot', html_name)
+    template_path = os.path.join('app', 'templates', 'bot', html_name)
     with open(template_path, 'r', encoding='UTF-8') as file:
         template = Template(file.read())
         return template.render(**kwargs)
