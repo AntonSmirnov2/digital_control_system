@@ -153,13 +153,17 @@ def send_info(message):
 @bot.message_handler(commands=['Statistic'])
 @send_action('typing')
 def send_info(message):
+
     cid = message.chat.id
     uid = message.from_user.id
     user = get_tg_user(uid)
     if user and user.access_role.role_name in ['manager', 'admin']:
-        reply_msg = render_html_for_tg('statistic.html')
-        markup = start_markup(user.access_role.role_name)
-        bot.send_message(cid, reply_msg, reply_markup=markup, parse_mode='HTML')
+        try:
+            reply_msg = render_html_for_tg('statistic.html')
+            markup = start_markup(user.access_role.role_name)
+            bot.send_message(cid, reply_msg, reply_markup=markup, parse_mode='HTML')
+        except Exception as e:
+            bot.send_message(cid, e, reply_markup=markup)
 
 
 @bot.message_handler(content_types=['photo'])
