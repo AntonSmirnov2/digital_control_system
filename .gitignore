@@ -2,3 +2,4 @@
 /ngrok.exe
 /.env
 /venv/
+/logs/
