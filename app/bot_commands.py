@@ -24,8 +24,25 @@ def send_action(action):
     return decorator
 
 
+def catch_error():
+    def decorator(func):
+        @wraps(func)
+        def command_func(message, *args, **kwargs):
+            try:
+                return func(message, *args, **kwargs)
+            except Exception as e:
+                bot.send_message('Упс, что-то пошло не так.')
+        return command_func
+    return decorator
+
+
+def is_authenticated():
+    pass
+
+
 @bot.message_handler(commands=['start', 'help'])
 @send_action('typing')
+@catch_error()
 def command_start_handler(message):
     cid = message.chat.id
     uid = message.from_user.id
@@ -135,6 +152,7 @@ def register_user(message):
 
 @bot.message_handler(commands=['Info'])
 @send_action('typing')
+@catch_error
 def send_info(message):
     cid = message.chat.id
     uid = message.from_user.id
