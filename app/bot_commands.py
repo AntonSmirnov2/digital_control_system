@@ -1,5 +1,6 @@
 from functools import wraps
 
+from config import Config
 from app import bot, db
 from app.models import User
 from app.plugins.bot_markups import start_markup, update_location_markup
@@ -31,7 +32,10 @@ def catch_error():
             try:
                 return func(message, *args, **kwargs)
             except Exception as e:
-                bot.send_message('Упс, что-то пошло не так.')
+                if Config.DEBUG:
+                    bot.send_message(message.chat.id, e)
+                else:
+                    bot.send_message(message.chat.id, f'Упс, что-то пошло не так.')
         return command_func
     return decorator
 
@@ -159,7 +163,7 @@ def send_info(message):
     name = message.from_user.first_name
     user = get_tg_user(uid)
     if user:
-        reply_msg = render_html_for_tg('info.html', username=name, new_user=False)
+        reply_msg = render_html_for_tg('gfdd.html', username=name, new_user=False)
         markup = start_markup(user.access_role.role_name)
         bot.send_message(cid, reply_msg, reply_markup=markup, parse_mode='HTML')
     else:

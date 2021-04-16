@@ -8,6 +8,7 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 
 class Config:
+    DEBUG = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
     API_BOT_TOKEN = os.environ.get('API_BOT_TOKEN') or 'telegram-bot-api-token'
     APP_URL = os.environ.get('APP_URL')
