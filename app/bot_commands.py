@@ -152,7 +152,7 @@ def register_user(message):
 
 @bot.message_handler(commands=['Info'])
 @send_action('typing')
-@catch_error
+@catch_error()
 def send_info(message):
     cid = message.chat.id
     uid = message.from_user.id
