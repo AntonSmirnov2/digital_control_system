@@ -4,7 +4,8 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 
 from app import dash
-from app.plugins.dash_draphs import distribution_by_status_pie_fig, distribution_by_subcontractors_bar_fig
+from app.plugins.dash_draphs import distribution_by_status_pie_fig, \
+    distribution_by_subcontractors_bar_fig, actions_per_unit_bar_fig
 
 navbar = dbc.NavbarSimple(
     children=[
@@ -43,30 +44,30 @@ distribution_pie_and_bar_graph = dbc.Row([
 ])
 
 select = dbc.Select(
-    id="select",
+    id="apu_unit_select",
     bs_size='sm',
     options=[
-        {"label": "Месяц", "value": "month"},
-        {"label": "Неделю", "value": "week"},
-        {"label": "День", "value": "day"},
+        {"label": "Неделям", "value": "week"},
+        {"label": "Дням", "value": "day"},
+        {"label": "Часам", "value": "hwr"},
     ],
-    value='week'
+    value='day'
 )
 
-apd_header = dbc.Row([
-    dbc.Col('Активность за', width=2, align='center', style={'text-align': 'end'}),
+apu_header = dbc.Row([
+    dbc.Col('Активность по', width=2, align='center', style={'text-align': 'end'}),
     dbc.Col(select, width=2)
 ], justify="center", no_gutters=True)
 
-actions_per_day_bar_graph_card = dbc.Card([
-    dbc.CardHeader(apd_header),
+actions_per_unit_bar_graph_card = dbc.Card([
+    dbc.CardHeader(apu_header),
     dbc.CardBody([
-        dcc.Graph(id='actions-per-day-bar-graph')
+        dcc.Graph(id='actions-per-unit-bar-graph')
     ])
 ], style={'margin': 0})
 
-actions_per_day_bar_graph = dbc.Row([
-    dbc.Col(actions_per_day_bar_graph_card, width=12)
+actions_per_unit_bar_graph = dbc.Row([
+    dbc.Col(actions_per_unit_bar_graph_card, width=12)
 ])
 
 dash.layout = html.Div(
@@ -77,7 +78,7 @@ dash.layout = html.Div(
                 # dcc.Interval(id="interval", interval=5000, n_intervals=0),
                 distribution_pie_and_bar_graph,
                 html.Br(),
-                actions_per_day_bar_graph,
+                actions_per_unit_bar_graph,
                 html.Br(),
                 html.Div(style={"height": "200px"}),
             ]
@@ -88,8 +89,14 @@ dash.layout = html.Div(
 
 @dash.callback(
     [Output('total-distribution-pie-graph', 'figure'),
-     Output('subcontractors-distribution-bar-graph', 'figure')],
-    [Input('update_button', 'n_clicks')]
+     Output('subcontractors-distribution-bar-graph', 'figure'),
+     Output('actions-per-unit-bar-graph', 'figure')],
+    [Input('update_button', 'n_clicks'),
+     Input('apu_unit_select', 'value')]
 )
-def update_statistic(update):
-    return distribution_by_status_pie_fig(), distribution_by_subcontractors_bar_fig()
+def update_statistic(update, apu_unit):
+    return distribution_by_status_pie_fig(), distribution_by_subcontractors_bar_fig(), \
+           actions_per_unit_bar_fig(apu_unit)
+
+
+

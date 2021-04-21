@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date, time
 
 from werkzeug.security import generate_password_hash
 
@@ -146,6 +146,51 @@ def get_books_count_by_status_for_scs(status_name) -> list:
             Book.company == sc
         ).count()
         response.append(sc_book_count_by_status)
+    return response
+
+
+def get_actions_in_period(time_unit, period) -> dict:
+    """Формирует словарь с количеством действий за единицу
+    времени на заданном промежутке от настоящего момента"""
+    response = {'create': [],
+                'progress': [],
+                'regress': [],
+                'delete': [],
+                'total_actions': 0}
+    today_date = date.today()
+    to_time = datetime.combine(today_date, time(23, 59, 59))
+    if time_unit == 'week':
+        step = {'days': 7}
+    elif time_unit == 'day':
+        step = {'days': 1}
+    else:
+        cur_time = datetime.utcnow().time()
+        to_time = datetime.utcnow() + timedelta(hours=1, minutes=-cur_time.minute, seconds=-cur_time.second)
+        step = {'hours': 1}
+    from_time = to_time - timedelta(**step)
+    for i in range(period):
+        create, progress, regress, delete = 0, 0, 0, 0
+        actions = Action.query.filter(to_time > Action.timestamp).filter(Action.timestamp > from_time).all()
+        to_time = from_time
+        from_time -= timedelta(**step)
+        response['total_actions'] += len(actions)
+        for action in actions:
+            if not action.old_status:
+                create += 1
+            elif action.new_status.id == BookStatus.query.all()[-1].id:
+                delete -= 1
+            elif action.old_status.id > action.new_status.id:
+                regress -= 1
+            else:
+                progress += 1
+        response['create'].append(create)
+        response['progress'].append(progress)
+        response['regress'].append(regress)
+        response['delete'].append(delete)
+    response['create'].reverse()
+    response['progress'].reverse()
+    response['regress'].reverse()
+    response['delete'].reverse()
     return response
 
 

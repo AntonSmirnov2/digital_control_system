@@ -1,7 +1,9 @@
+from datetime import datetime, timedelta
+
 import plotly.graph_objects as go
 
 from app.plugins.db_helpers import get_all_subcontractors_short_names, get_all_valid_book_statuses, \
-    get_books_count_by_status_for_scs, get_books_count_by_status
+    get_books_count_by_status_for_scs, get_books_count_by_status, get_actions_in_period
 
 color_pallet = [
     "rgb(255,247,251)",
@@ -53,5 +55,54 @@ def distribution_by_subcontractors_bar_fig():
                     xanchor="center",
                     x=0.5),
         margin=dict(l=5, r=5, t=5, b=5),
-        barmode='stack', )
+        barmode='stack',
+        plot_bgcolor='white'
+    )
+    return fig_bar
+
+
+def _create_timeline_from_unit(time_unit, period):
+    if time_unit == 'week':
+        return [(datetime.utcnow() - timedelta(days=i*7)).strftime('%W w %y y') for i in range(period)]
+    if time_unit == 'day':
+        return [(datetime.utcnow() - timedelta(days=i)).strftime('%d.%m.%y') for i in range(period)]
+    if time_unit == 'hwr':
+        return [(datetime.utcnow() - timedelta(hours=i)).strftime('%H:00 %d.%m') for i in range(period)]
+
+
+def actions_per_unit_bar_fig(time_unit, period=24):
+    unit_names = _create_timeline_from_unit(time_unit, period)
+    unit_names.reverse()
+    actions_count = get_actions_in_period(time_unit, period)
+    bar_width = 0.3
+    fig_bar = go.Figure(data=[
+        go.Bar(name='Прогресс',
+               x=unit_names,
+               y=actions_count['progress'],
+               width=bar_width,
+               marker_color=color_pallet[2]),
+        go.Bar(name='Регресс',
+               x=unit_names,
+               y=actions_count['regress'],
+               width=bar_width,
+               marker_color='red'),
+        go.Bar(name='Удаление',
+               x=unit_names,
+               y=actions_count['delete'],
+               width=bar_width,
+               marker_color='gray'),
+        go.Bar(name='Создание',
+               x=unit_names,
+               y=actions_count['create'],
+               width=bar_width,
+               marker_color='gray'),
+    ])
+    fig_bar.update_layout(
+        legend=dict(orientation="h",
+                    xanchor="center",
+                    x=0.5),
+        margin=dict(l=5, r=5, t=5, b=5),
+        barmode='relative',
+        plot_bgcolor='white'
+    )
     return fig_bar

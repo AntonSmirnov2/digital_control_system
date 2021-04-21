@@ -31,7 +31,7 @@ moment = Moment(app)
 
 API_BOT_TOKEN = app.config['API_BOT_TOKEN']
 bot = telebot.TeleBot(API_BOT_TOKEN)
-bot.enable_save_next_step_handlers(delay=2)
+bot.enable_save_next_step_handlers(delay=1, filename=os.path.join('bot_tmp_files', 'step.save'))
 bot.load_next_step_handlers()
 
 if not app.debug:
@@ -55,4 +55,3 @@ if not app.debug:
 from app import routes, models, bot_commands, admin_panels, dash_pannel
 
 # TODO mail
-# TODO deploy
