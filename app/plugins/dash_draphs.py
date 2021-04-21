@@ -63,7 +63,7 @@ def distribution_by_subcontractors_bar_fig():
 
 def _create_timeline_from_unit(time_unit, period):
     if time_unit == 'week':
-        return [(datetime.utcnow() - timedelta(days=i*7)).strftime('%W w %y y') for i in range(period)]
+        return [(datetime.utcnow() - timedelta(days=i*7)).strftime('%Ww %yy') for i in range(period)]
     if time_unit == 'day':
         return [(datetime.utcnow() - timedelta(days=i)).strftime('%d.%m.%y') for i in range(period)]
     if time_unit == 'hwr':
@@ -97,6 +97,10 @@ def actions_per_unit_bar_fig(time_unit, period=24):
                width=bar_width,
                marker_color='gray'),
     ])
+    y_axis_max = max([i + j for i, j in zip(actions_count['progress'], actions_count['create'])])
+    y_axis_min = min([i + j for i, j in zip(actions_count['regress'], actions_count['delete'])])
+    if (y_axis_max + abs(y_axis_min)) < 35:
+        fig_bar.update_yaxes(range=[-5, 30])
     fig_bar.update_layout(
         legend=dict(orientation="h",
                     xanchor="center",
