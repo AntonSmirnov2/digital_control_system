@@ -32,8 +32,8 @@
                         <li><a href="{{ url_for('render_dashboard') }}">Statistic</a></li>
                         <li><a href="{{ url_for('create_new_user') }}">Create New User</a></li>
                         <li><a href="{{ url_for('admin.index') }}">Admin</a></li>
-                        {% elif current_user.role == 'manager' %}
-                        <li><a href="{{ url_for('statistic') }}">Statistic</a></li>
+                        {% elif current_user.has_role('manager') %}
+                        <li><a href="{{ url_for('render_dashboard') }}">Statistic</a></li>
                         {% endif %}
                     {% endif %}
                 </ul>
