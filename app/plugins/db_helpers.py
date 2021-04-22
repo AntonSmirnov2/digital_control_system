@@ -180,9 +180,9 @@ def get_actions_in_period(time_unit, period) -> dict:
             elif action.new_status.id == BookStatus.query.all()[-1].id:
                 delete -= 1
             elif action.old_status.id > action.new_status.id:
-                regress -= 1
+                regress += action.new_status.id - action.old_status.id
             else:
-                progress += 1
+                progress += action.new_status.id - action.old_status.id
         response['create'].append(create)
         response['progress'].append(progress)
         response['regress'].append(regress)

@@ -63,7 +63,7 @@ def distribution_by_subcontractors_bar_fig():
 
 def _create_timeline_from_unit(time_unit, period):
     if time_unit == 'week':
-        return [(datetime.utcnow() - timedelta(days=i*7)).strftime('%Ww %yy') for i in range(period)]
+        return [(datetime.utcnow() - timedelta(days=i * 7)).strftime('%Ww %yy') for i in range(period)]
     if time_unit == 'day':
         return [(datetime.utcnow() - timedelta(days=i)).strftime('%d.%m.%y') for i in range(period)]
     if time_unit == 'hwr':
@@ -74,7 +74,7 @@ def actions_per_unit_bar_fig(time_unit, period=24):
     unit_names = _create_timeline_from_unit(time_unit, period)
     unit_names.reverse()
     actions_count = get_actions_in_period(time_unit, period)
-    bar_width = 0.3
+    bar_width = 0.2
     fig_bar = go.Figure(data=[
         go.Bar(name='Прогресс',
                x=unit_names,
@@ -102,9 +102,10 @@ def actions_per_unit_bar_fig(time_unit, period=24):
     if (y_axis_max + abs(y_axis_min)) < 35:
         fig_bar.update_yaxes(range=[-5, 30])
     fig_bar.update_layout(
-        legend=dict(orientation="h",
-                    xanchor="center",
-                    x=0.5),
+        legend=dict(yanchor="top",
+                    y=0.99,
+                    xanchor="left",
+                    x=0.01),
         margin=dict(l=5, r=5, t=5, b=5),
         barmode='relative',
         plot_bgcolor='white'
