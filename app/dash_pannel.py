@@ -38,9 +38,17 @@ subcontractors_distribution_bar_graph_card = dbc.Card([
     ])
 ], style={'margin': 0})
 
+empty_card = dbc.Card([
+    dbc.CardHeader('Заголовок', style={'text-align': 'center'}),
+    dbc.CardBody([
+        dcc.Graph()
+    ])
+], style={'margin': 0})
+
 distribution_pie_and_bar_graph = dbc.Row([
-    dbc.Col(total_distribution_pie_graph_card, width=5),
-    dbc.Col(subcontractors_distribution_bar_graph_card, width=7)
+    dbc.Col(total_distribution_pie_graph_card, width=3),
+    dbc.Col(subcontractors_distribution_bar_graph_card, width=5),
+    dbc.Col(empty_card, width=4)
 ])
 
 select = dbc.Select(
@@ -67,7 +75,7 @@ actions_per_unit_bar_graph_card = dbc.Card([
 ], style={'margin': 0})
 
 actions_per_unit_bar_graph = dbc.Row([
-    dbc.Col(actions_per_unit_bar_graph_card, width=12)
+    dbc.Col(actions_per_unit_bar_graph_card, width=8)
 ])
 
 dash.layout = html.Div(
@@ -81,7 +89,7 @@ dash.layout = html.Div(
                 actions_per_unit_bar_graph,
                 html.Br(),
                 html.Div(style={"height": "200px"}),
-            ]
+            ], fluid=True
         ),
     ]
 )
@@ -97,6 +105,3 @@ dash.layout = html.Div(
 def update_statistic(update, apu_unit):
     return distribution_by_status_pie_fig(), distribution_by_subcontractors_bar_fig(), \
            actions_per_unit_bar_fig(apu_unit)
-
-
-
