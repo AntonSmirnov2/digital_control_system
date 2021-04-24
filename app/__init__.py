@@ -19,7 +19,8 @@ dash = Dash(__name__,
             server=app,
             url_base_pathname='/dashboard/',
             external_stylesheets=Config.DASH_EXTERNAL_STYLESHEETS,
-            assets_folder=Config.STATIC_FOLDER)
+            assets_folder=Config.STATIC_FOLDER,
+            suppress_callback_exceptions=True)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, render_as_batch=True)
@@ -52,6 +53,6 @@ if not app.debug:
     app.logger.setLevel(logging.INFO)
     app.logger.info('DCS startup')
 
-from app import routes, models, bot_commands, admin_panels, dash_statistic, errors
+from app import routes, models, bot_commands, admin_panels, dashboard, errors
 
 # TODO mail

@@ -6,8 +6,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 import telebot
 
 from app import app, db, bot, API_BOT_TOKEN
-from app.forms import LoginForm, RegistrationForm
-from app.models import User, Role, Action, Book
+from app.forms import LoginForm
+from app.models import User, Action, Book
 from config import Config
 
 # TODO create view for book with info about it and moving story on map (far future)
@@ -108,27 +108,6 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/create_new_user', methods=['GET', 'POST'])
-@login_required
-def create_new_user():
-    if current_user.access_role.role_name != 'admin':
-        flash('Sorry, you can not add new user')
-        return redirect(url_for('index'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        role = Role.query.filter_by(role_name=form.role.data).first()
-        user = User(username=form.username.data,
-                    email=form.email.data,
-                    access_role=role,
-                    organization=form.organization.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('Congratulations, we got a new registered user!')
-        return redirect(url_for('index'))
-    return render_template('create_new_user.html', title='Register', form=form)
-
-
 @app.route(f'/{API_BOT_TOKEN}', methods=['POST'])
 def get_bot_update():
     if request.method == 'POST':
@@ -147,7 +126,7 @@ def set_webhook():
         return 'OK', 200
 
 
-@app.route('/dashboard')
+@app.route('/dash/<dash_name>')
 @login_required
-def render_dashboard():
-    return redirect('/dashboard')
+def render_dashboard(dash_name):
+    return redirect(f'/dashboard/{dash_name}')

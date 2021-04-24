@@ -78,21 +78,16 @@ actions_per_unit_bar_graph = dbc.Row([
     dbc.Col(actions_per_unit_bar_graph_card, width=8)
 ])
 
-dash.layout = html.Div(
-    [
-        navbar,
-        dbc.Container(
-            [
-                # dcc.Interval(id="interval", interval=5000, n_intervals=0),
-                distribution_pie_and_bar_graph,
-                html.Br(),
-                actions_per_unit_bar_graph,
-                html.Br(),
-                html.Div(style={"height": "200px"}),
-            ], fluid=True
-        ),
-    ]
-)
+layout = html.Div([
+    navbar,
+    dbc.Container([
+        # dcc.Interval(id="interval", interval=5000, n_intervals=0),
+        distribution_pie_and_bar_graph,
+        html.Br(), actions_per_unit_bar_graph,
+        html.Br(),
+        html.Div(style={"height": "200px"}),
+    ], fluid=True)
+])
 
 
 @dash.callback(

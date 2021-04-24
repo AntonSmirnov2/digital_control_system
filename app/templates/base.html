@@ -29,8 +29,8 @@
                     {% else %}
                     <li><a href="{{ url_for('index') }}">Home</a></li>
                         {% if current_user.has_role('admin') %}
-                        <li><a href="{{ url_for('render_dashboard') }}">Statistic</a></li>
-                        <li><a href="{{ url_for('create_new_user') }}">Create New User</a></li>
+                        <li><a href="{{ url_for('render_dashboard', dash_name='statistic') }}">Statistic</a></li>
+                        <li><a href="{{ url_for('render_dashboard', dash_name='data_management') }}">Data management</a></li>
                         <li><a href="{{ url_for('admin.index') }}">Admin</a></li>
                         {% elif current_user.has_role('manager') %}
                         <li><a href="{{ url_for('render_dashboard') }}">Statistic</a></li>
