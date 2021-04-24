@@ -52,6 +52,6 @@ if not app.debug:
     app.logger.setLevel(logging.INFO)
     app.logger.info('DCS startup')
 
-from app import routes, models, bot_commands, admin_panels, dash_pannel, errors
+from app import routes, models, bot_commands, admin_panels, dash_statistic, errors
 
 # TODO mail

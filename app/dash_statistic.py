@@ -19,7 +19,7 @@ navbar = dbc.NavbarSimple(
         dbc.NavItem(dbc.NavLink("Info", href='/info', external_link=True)),
         dbc.NavItem(dbc.NavLink("Main Page", href='/', external_link=True)),
     ],
-    brand="DCS statistic page",
+    brand="DCS statistic",
     brand_href='/',
     sticky="top",
 )
