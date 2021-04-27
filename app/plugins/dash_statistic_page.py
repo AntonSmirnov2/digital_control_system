@@ -16,7 +16,7 @@ navbar = dbc.NavbarSimple(
             color="primary",
             className="mr-3",
             block=True)),
-        dbc.NavItem(dbc.NavLink("Info", href='/info', external_link=True)),
+        dbc.NavItem(dbc.NavLink("Data Management", href='/dashboard/data_management', external_link=True)),
         dbc.NavItem(dbc.NavLink("Main Page", href='/', external_link=True)),
     ],
     brand="DCS statistic",
@@ -81,11 +81,14 @@ actions_per_unit_bar_graph = dbc.Row([
 layout = html.Div([
     navbar,
     dbc.Container([
-        # dcc.Interval(id="interval", interval=5000, n_intervals=0),
-        distribution_pie_and_bar_graph,
-        html.Br(), actions_per_unit_bar_graph,
-        html.Br(),
-        html.Div(style={"height": "200px"}),
+        dbc.Spinner([
+            # dcc.Interval(id="interval", interval=5000, n_intervals=0),
+            distribution_pie_and_bar_graph,
+            html.Br(),
+            actions_per_unit_bar_graph,
+            html.Br(),
+            html.Div(style={"height": "200px"})
+        ], size="lg", color="primary", type="border", fullscreen=True,)
     ], fluid=True)
 ])
 
