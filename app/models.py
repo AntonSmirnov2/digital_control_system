@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -32,6 +32,7 @@ class Company(db.Model):
 class BookStatus(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     status_name = db.Column(db.String(60), nullable=False)
+    status_duration = db.Column(db.Interval, nullable=False, default=timedelta(days=99999), server_default='99999')
 
     books = db.relationship('Book', backref='book_status', lazy='dynamic')
 
