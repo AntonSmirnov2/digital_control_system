@@ -262,15 +262,15 @@ def build_sample_db():
     # BookStatus table
 
     default_statuses = [
-        {'status_name': 'Формирование'},
-        {'status_name': 'Проверка ГП'},
-        {'status_name': 'Замечания ГП'},
-        {'status_name': 'Проверка СК'},
-        {'status_name': 'Замечания СК'},
-        {'status_name': 'Проверка З'},
-        {'status_name': 'Замечания З'},
-        {'status_name': 'Архив'},
-        {'status_name': '[удалено]'}
+        {'status_name': 'Формирование', 'status_duration': timedelta(days=90)},
+        {'status_name': 'Проверка ГП', 'status_duration': timedelta(days=3)},
+        {'status_name': 'Замечания ГП', 'status_duration': timedelta(days=90)},
+        {'status_name': 'Проверка СК', 'status_duration': timedelta(days=3)},
+        {'status_name': 'Замечания СК', 'status_duration': timedelta(days=90)},
+        {'status_name': 'Проверка З', 'status_duration': timedelta(days=6)},
+        {'status_name': 'Замечания З', 'status_duration': timedelta(days=90)},
+        {'status_name': 'Архив', 'status_duration': timedelta(days=99999)},
+        {'status_name': '[удалено]', 'status_duration': timedelta(days=99999)}
     ]
     statuses = []
     for i in default_statuses:
