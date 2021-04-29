@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from flask import url_for
 from flask_admin import Admin
 from flask_login import current_user
@@ -5,7 +7,7 @@ from flask_admin import AdminIndexView
 from flask_admin.menu import MenuLink
 from flask_admin.contrib.sqla import ModelView
 from werkzeug.security import generate_password_hash
-from wtforms import PasswordField
+from wtforms import PasswordField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length, AnyOf
 
 from app import app, db
@@ -24,6 +26,21 @@ class MyModelView(ModelView):
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.has_role('admin')
+
+
+class BookStatusIndexView(ModelView):
+    form_excluded_columns = ('books',)
+    form_extra_fields = {
+        'new_duration': IntegerField('Status Duration (days)')
+    }
+
+    def on_model_change(self, form, model, is_created):
+        if form.new_duration.data:
+            model.status_duration = timedelta(days=form.new_duration.data)
+
+    def __init__(self, session, **kwargs):
+        # Just call parent class with predefined model.
+        super(BookStatusIndexView, self).__init__(BookStatus, session, **kwargs)
 
 
 class UserModelView(MyModelView):
@@ -65,7 +82,7 @@ admin = Admin(app, index_view=MyAdminIndexView(endpoint='admin'))
 admin.add_view(UserModelView(db.session))
 admin.add_view(MyModelView(Book, db.session))
 admin.add_view(ActionModelView(db.session))
-admin.add_view(MyModelView(BookStatus, db.session, category='Types'))
+admin.add_view(BookStatusIndexView(db.session, category='Types'))
 admin.add_view(MyModelView(Company, db.session, category='Types'))
 admin.add_view(MyModelView(Role, db.session, category='Types'))
 admin.add_link(MainIndexLink(name='Main Page'))
