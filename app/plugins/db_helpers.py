@@ -121,6 +121,7 @@ def get_all_subcontractors_short_names() -> list:
 def get_all_valid_book_statuses() -> list:
     """Возвращает все возможные статусы книг кроме статуса '[удалено]'"""
     statuses = BookStatus.query.all()
+    statuses.sort(key=lambda i: i.id)
     response = [i.status_name for i in statuses if i.status_name != '[удалено]']
     return response
 
@@ -129,6 +130,7 @@ def get_books_count_by_status() -> list:
     """Возвращает список с количеством книг для каждого статуса кроме статуса '[удалено]'"""
     response = []
     statuses = [i for i in BookStatus.query.all() if i.status_name != '[удалено]']
+    statuses.sort(key=lambda i: i.id)
     for status in statuses:
         books_by_status = Book.query.filter_by(status_id=status.id).count()
         response.append(books_by_status)
