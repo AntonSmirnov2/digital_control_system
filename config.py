@@ -18,6 +18,7 @@ class Config:
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
 
     DASH_EXTERNAL_STYLESHEETS = [
-        dbc.themes.BOOTSTRAP]
+        dbc.themes.BOOTSTRAP
+    ]
 
     ACTIONS_PER_PAGE = 50

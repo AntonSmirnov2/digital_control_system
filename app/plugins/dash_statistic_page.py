@@ -39,16 +39,16 @@ subcontractors_distribution_bar_graph_card = dbc.Card([
 ], style={'margin': 0})
 
 empty_card = dbc.Card([
-    dbc.CardHeader('Заголовок', style={'text-align': 'center'}),
+    dbc.CardHeader('Временны́е лимиты', style={'text-align': 'center'}),
     dbc.CardBody([
         dcc.Graph()
     ])
 ], style={'margin': 0})
 
 distribution_pie_and_bar_graph = dbc.Row([
-    dbc.Col(total_distribution_pie_graph_card, width=3),
-    dbc.Col(subcontractors_distribution_bar_graph_card, width=5),
-    dbc.Col(empty_card, width=4)
+    dbc.Col(total_distribution_pie_graph_card, md=3),
+    dbc.Col(subcontractors_distribution_bar_graph_card, md=5),
+    dbc.Col(empty_card, md=4)
 ])
 
 select = dbc.Select(
@@ -75,6 +75,7 @@ actions_per_unit_bar_graph_card = dbc.Card([
 ], style={'margin': 0})
 
 actions_per_unit_bar_graph = dbc.Row([
+    dbc.Col(width=2),
     dbc.Col(actions_per_unit_bar_graph_card, width=8)
 ])
 
@@ -88,7 +89,7 @@ layout = html.Div([
             actions_per_unit_bar_graph,
             html.Br(),
             html.Div(style={"height": "200px"})
-        ], size="lg", color="primary", type="border", fullscreen=True,)
+        ], size="lg", color="primary", type="border", fullscreen=True)
     ], fluid=True)
 ])
 

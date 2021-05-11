@@ -23,7 +23,7 @@ dash = Dash(__name__,
             suppress_callback_exceptions=True)
 
 db = SQLAlchemy(app)
-migrate = Migrate(app, db, render_as_batch=True)
+migrate = Migrate(app, db, render_as_batch=True, include_schemas=True)
 
 login = LoginManager(app)
 login.login_view = 'login'
